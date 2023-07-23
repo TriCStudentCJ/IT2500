@@ -1,0 +1,54 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class DemoAutomation {
+
+    public static void main(String[] args) throws InterruptedException {
+        // Specify the path to ChromeDriver executable
+        System.setProperty("webdriver.chrome.driver", "C:\\Selenium Webdriver\\ChromeDriver\\chromedriver_win32\\chromedriver.exe");
+
+        // Run ChromeDriver
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+
+        // a. Open browser to http://petfinder.com/user/login
+        driver.get("http://petfinder.com/user/login");
+
+        // Adding a sleep so BUI can load
+        Thread.sleep(3000); 
+        
+        // b. Enter user name (find by id)
+        WebElement usernameField = driver.findElement(By.id("Login_Page_username"));
+        usernameField.sendKeys("mytestqa2023@gmail.com");
+
+        // c. Enter password (find by id)
+        WebElement passwordField = driver.findElement(By.id("Login_Page_password"));
+        passwordField.sendKeys("Student#123");
+
+        // d. Click "LOG IN" button (find by id)
+        WebElement doneButton = driver.findElement(By.id("Login_Page_submit"));
+        doneButton.click();
+
+        // Adding a sleep so BUI can load
+        Thread.sleep(3000);
+
+        // e. Get the profile name (find by classname)
+        WebElement profileNameElement = driver.findElement(By.className("header-inner-profile-accountBtn"));
+        String profileName = profileNameElement.getText();
+
+        // f. Assert that the text matches "TriCeratops Horridus"
+        String expectedProfileName = "TriCeratops Horridus";
+        if (profileName.equals(expectedProfileName)) {
+            System.out.println("Matches");
+        } else {
+            System.out.println("Does not match.");
+        }
+
+        // Close the browser
+        driver.quit();
+    }
+}
