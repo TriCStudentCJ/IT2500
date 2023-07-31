@@ -1,0 +1,97 @@
+import org.openqa.selenium.By;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.List;
+public class DemoAutomation {
+
+    public static void main(String[] args) throws InterruptedException {
+        // Specify the path to ChromeDriver executable
+        System.setProperty("webdriver.chrome.driver", "C:\\Selenium Webdriver\\ChromeDriver\\chromedriver_win32\\chromedriver.exe");
+
+        // Create a new instance of ChromeDriver
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+
+        // a. Open browser to http://petfinder.com/user/login
+        driver.get("http://petfinder.com/user/login");
+
+        // Adding a sleep so BUI can load
+        Thread.sleep(3000); 
+        
+        // b. Enter user name (find by id)
+        WebElement usernameField = driver.findElement(By.id("Login_Page_username"));
+        usernameField.sendKeys("mytestqa2023@gmail.com");
+
+        // c. Enter password (find by id)
+        WebElement passwordField = driver.findElement(By.id("Login_Page_password"));
+        passwordField.sendKeys("Student#123");
+
+        // d. Click "LOG IN" button (find by id)
+        WebElement doneButton = driver.findElement(By.id("Login_Page_submit"));
+        doneButton.click();
+
+        // Adding a sleep so BUI can load
+        Thread.sleep(3000);
+
+        // a. Enter "Dog" in first search box
+        WebElement animalsearchField = driver.findElement(By.id("simpleSearchAnimalType"));
+        animalsearchField.sendKeys("Dog");
+        
+     // Adding a sleep so BUI can load
+        Thread.sleep(3000);
+        
+        // b. Enter "Cleveland, OH" in second search box
+        WebElement citysearchField = driver.findElement(By.id("simpleSearchLocation"));
+        citysearchField.sendKeys("Cleveland, OH");
+        
+     // Adding a sleep so BUI can load
+        Thread.sleep(3000);
+        
+        // c. Click on the magnifier search button
+        WebElement magButton = driver.findElement(By.className("iconSearch"));
+        magButton.click();
+        
+        // Adding a sleep so BUI can load
+        Thread.sleep(3000);
+
+        // a. Once the results load, scrape the page and get name, age, breed, distance.
+        List<WebElement> petElements = driver.findElements(By.xpath("//span[@data-test='Pet_Card_Pet_Details_List']"));
+
+        // b. Display the results for each pet in the Console
+        for (WebElement petElement : petElements) {
+            String petDetails = petElement.getText();
+            System.out.println("Pet Details: " + petDetails);
+        }
+        
+        // a. Save the search by clicking on "Save Search" button
+        WebElement saveButton = driver.findElement(By.cssSelector(".btn.btn_loader.btn_clear"));
+        saveButton.click();
+
+        
+        
+        // b. Assert the search term contains "Dog" and "Cleveland, OH" in the popup box
+        String pageSource = driver.getPageSource();
+        String searchText1 = "Dog";
+        String searchText2 = "Cleveland, OH";
+        boolean containsDog = pageSource.contains(searchText1);
+        boolean containsLocation = pageSource.contains(searchText2);
+
+        if (containsDog && containsLocation) {
+            System.out.println("The page contains Dog and Cleveland, OH ");
+        } else {
+            System.out.println("The page does not contain Dog and Cleveland, OH ");
+        }
+        // c. Click on "Done" button
+        WebElement done2Button = driver.findElement(By.xpath("//*[@id='modal-container']/div/div/div[2]/div/button"));
+        done2Button.click();
+
+        
+        
+        // Close the browser
+        driver.quit();
+    }
+}
