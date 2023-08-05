@@ -1,0 +1,100 @@
+import org.openqa.selenium.By;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.List;
+public class DemoAutomation {
+
+    public static void main(String[] args) throws InterruptedException {
+        // Specify the path to ChromeDriver executable
+        System.setProperty("webdriver.chrome.driver", "C:\\Selenium Webdriver\\ChromeDriver\\chromedriver_win32\\chromedriver.exe");
+
+        // Create a new instance of ChromeDriver
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+
+        // a. Open browser to http://petfinder.com/user/login
+        driver.get("http://petfinder.com/user/login");
+
+        // Adding a sleep so BUI can load
+        Thread.sleep(3000); 
+        
+        // b. Enter user name (find by id)
+        WebElement usernameField = driver.findElement(By.id("Login_Page_username"));
+        usernameField.sendKeys("mytestqa2023@gmail.com");
+
+        // c. Enter password (find by id)
+        WebElement passwordField = driver.findElement(By.id("Login_Page_password"));
+        passwordField.sendKeys("Student#123");
+
+        // d. Click "LOG IN" button (find by id)
+        WebElement doneButton = driver.findElement(By.id("Login_Page_submit"));
+        doneButton.click();
+
+        // Adding a sleep so BUI can load
+        Thread.sleep(3000);
+
+        // a. Enter "Dog" in first search box
+        WebElement animalsearchField = driver.findElement(By.id("simpleSearchAnimalType"));
+        animalsearchField.sendKeys("Dog");
+        
+        // Adding a sleep so BUI can load
+        Thread.sleep(3000);
+        
+        // b. Enter "Cleveland, OH" in second search box
+        WebElement citysearchField = driver.findElement(By.id("simpleSearchLocation"));
+        citysearchField.sendKeys("Cleveland, OH");
+        
+     // Adding a sleep so BUI can load
+        Thread.sleep(3000);
+        
+        // c. Click on the magnifier search button
+        WebElement magButton = driver.findElement(By.className("iconSearch"));
+        magButton.click();
+        
+        // Adding a sleep so BUI can load
+        Thread.sleep(3000);
+       // 1. Choose 3 pets and add them as favorites by clicking on the heart icon
+        WebElement firstPetFavorite = driver.findElement(By.xpath("//*[@id='petId_65720471']/pfdc-favorite-btn/button"));
+        firstPetFavorite.click();
+        Thread.sleep(3000);
+        
+        WebElement secondPetFavorite = driver.findElement(By.xpath("//*[@id=\"petId_65703386\"]/pfdc-favorite-btn/button"));
+        secondPetFavorite.click();
+        Thread.sleep(3000);
+        
+        WebElement thirdPetFavorite = driver.findElement(By.xpath("//*[@id=\"petId_65702409\"]/pfdc-favorite-btn/button"));
+        thirdPetFavorite.click();
+        
+        Thread.sleep(3000);
+        
+       //2. Click on the heart icon on top of the page to go to "Favorites"
+        WebElement favoriteButton = driver.findElement(By.xpath("//*[@id=\"Site\"]/div/pfdc-header/header/a"));
+        favoriteButton.click();
+        
+        
+        // Adding a sleep so BUI can load
+        Thread.sleep(3000);
+        
+        
+       // 3. Verify that the 3 pets that you chose in step 1 are showing up under Favorites
+        String pageFavoriteSource = driver.getPageSource();
+        String searchText1 = "Gus";
+        String searchText2 = "Rolo";
+        String searchText3 = "Toast";
+        boolean containsGus = pageFavoriteSource.contains(searchText1);
+        boolean containsRolo = pageFavoriteSource.contains(searchText2);
+        boolean containsToast = pageFavoriteSource.contains(searchText2);
+        
+        if (containsGus && containsRolo && containsToast) {
+            System.out.println("All three dogs show up.");
+        } else {
+            System.out.println("All three dogs did not show up.");
+        }
+        // Close the browser
+       // driver.quit();
+    }
+}
